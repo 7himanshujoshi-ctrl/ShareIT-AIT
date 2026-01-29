@@ -24,8 +24,11 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+    console.log("POST /api/notes: Request received");
     try {
         const body = await request.json();
+        console.log("POST /api/notes: Body parsed. Title:", body.title, "Content Length (approx):", JSON.stringify(body).length);
+
         const { title, subject, summary, type, fileUrl, fileName, fileContent } = body;
 
         // Generate ID early to use in fileUrl

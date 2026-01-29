@@ -35,10 +35,20 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
-            setSelectedFile(e.target.files[0]);
+            const file = e.target.files[0];
+
+            // 4MB Limit (4 * 1024 * 1024 bytes)
+            if (file.size > 4 * 1024 * 1024) {
+                alert("File is too large. Please upload a file smaller than 4MB.");
+                e.target.value = ''; // Reset file input
+                setSelectedFile(null);
+                return;
+            }
+
+            setSelectedFile(file);
             // Auto-fill title if empty
             if (!title) {
-                setTitle(e.target.files[0].name.split('.')[0]);
+                setTitle(file.name.split('.')[0]);
             }
         }
     };

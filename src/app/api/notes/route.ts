@@ -26,16 +26,43 @@ export async function GET() {
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { title, subject, summary, type, fileUrl, fileName } = body;
+        const { title, subject, summary, type, fileUrl, fileName, fileContent } = body;
+
+        // Generate ID early to use in fileUrl
+        const id = Date.now().toString();
+        let finalFileUrl = fileUrl || '';
+        let fileBuffer = null;
+        let mimeType = null;
+
+        if (fileContent) {
+            fileBuffer = Buffer.from(fileContent, 'base64');
+            // Determine mime type based on file extension (simple mapping)
+            const ext = fileName?.split('.').pop()?.toLowerCase();
+            if (ext) {
+                const mimeTypes: Record<string, string> = {
+                    'pdf': 'application/pdf',
+                    'doc': 'application/msword',
+                    'docx': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                    'ppt': 'application/vnd.ms-powerpoint',
+                    'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                    'jpg': 'image/jpeg',
+                    'jpeg': 'image/jpeg',
+                    'png': 'image/png',
+                    'txt': 'text/plain'
+                };
+                mimeType = mimeTypes[ext] || 'application/octet-stream';
+            }
+            finalFileUrl = `/api/files/${id}`;
+        }
 
         const newNote = {
-            id: Date.now().toString(),
+            id,
             title,
             subject,
             type,
             summary: summary || '',
             tags: JSON.stringify(['User Upload']),
-            fileUrl: fileUrl || '',
+            fileUrl: finalFileUrl,
             fileName: fileName || '',
             dateAdded: new Date().toISOString(),
             author: 'You',
@@ -43,8 +70,8 @@ export async function POST(request: NextRequest) {
         };
 
         await query(
-            `INSERT INTO notes (id, title, subject, type, summary, tags, "fileUrl", "fileName", "dateAdded", author, likes)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+            `INSERT INTO notes (id, title, subject, type, summary, tags, "fileUrl", "fileName", "dateAdded", author, likes, "fileData", "mimeType")
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`,
             [
                 newNote.id,
                 newNote.title,
@@ -56,7 +83,9 @@ export async function POST(request: NextRequest) {
                 newNote.fileName,
                 newNote.dateAdded,
                 newNote.author,
-                newNote.likes
+                newNote.likes,
+                fileBuffer,
+                mimeType
             ]
         );
 

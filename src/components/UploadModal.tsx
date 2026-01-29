@@ -53,46 +53,61 @@ const UploadModal: React.FC<UploadModalProps> = ({ isOpen, onClose, onSubmit }) 
         setIsUploading(true);
 
         try {
-            const formData = new FormData();
-            formData.append('file', selectedFile);
+            // Convert file to Base64
+            const reader = new FileReader();
+            reader.readAsDataURL(selectedFile);
 
-            const response = await fetch('/api/upload', {
-                method: 'POST',
-                body: formData,
-            });
+            reader.onload = async () => {
+                const base64String = reader.result as string;
+                // Remove data URL prefix (e.g., "data:application/pdf;base64,")
+                const base64Content = base64String.split(',')[1];
 
-            if (!response.ok) {
-                throw new Error('Upload failed');
-            }
+                let noteType: NoteType = 'pdf'; // Default
+                const ext = selectedFile.name.split('.').pop()?.toLowerCase();
+                if (ext === 'doc' || ext === 'docx') noteType = 'docx';
+                if (ext === 'ppt' || ext === 'pptx') noteType = 'ppt';
+                if (['jpg', 'jpeg', 'png', 'webp'].includes(ext || '')) noteType = 'image';
+                if (ext === 'txt') noteType = 'text';
 
-            const data = await response.json();
+                const response = await fetch('/api/notes', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        title,
+                        subject,
+                        summary,
+                        type: noteType,
+                        fileName: selectedFile.name,
+                        fileContent: base64Content, // Send base64 content
+                    }),
+                });
 
-            let noteType: NoteType = 'pdf'; // Default
-            const ext = selectedFile.name.split('.').pop()?.toLowerCase();
-            if (ext === 'doc' || ext === 'docx') noteType = 'docx';
-            if (ext === 'ppt' || ext === 'pptx') noteType = 'ppt';
-            if (['jpg', 'jpeg', 'png', 'webp'].includes(ext || '')) noteType = 'image';
-            if (ext === 'txt') noteType = 'text';
+                if (!response.ok) {
+                    throw new Error('Failed to save note');
+                }
 
-            onSubmit({
-                title,
-                subject,
-                summary,
-                type: noteType,
-                fileUrl: data.fileUrl,
-                fileName: selectedFile.name
-            });
+                const data = await response.json();
 
-            // Reset
-            setTitle('');
-            setSummary('');
-            setSelectedFile(null);
-            onClose();
+                onSubmit(data.note);
+
+                // Reset
+                setTitle('');
+                setSummary('');
+                setSelectedFile(null);
+                onClose();
+            };
+
+            reader.onerror = (error) => {
+                console.error('Error reading file:', error);
+                alert("Failed to read file.");
+                setIsUploading(false);
+            };
 
         } catch (error) {
-            console.error("Error uploading file:", error);
-            alert("Failed to upload file. Please try again.");
-        } finally {
+            console.error("Error uploading note:", error);
+            alert("Failed to upload note. Please try again.");
             setIsUploading(false);
         }
     };

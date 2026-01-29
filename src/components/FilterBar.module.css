@@ -1,0 +1,47 @@
+.container {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 4px;
+    /* Space for shadow clipped by overflow */
+    margin-bottom: 32px;
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    justify-content: center;
+}
+
+.container::-webkit-scrollbar {
+    display: none;
+}
+
+.chip {
+    padding: 8px 16px;
+    border-radius: 99px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: #6B7280;
+}
+
+.chip:hover {
+    background: var(--card-bg);
+    color: var(--foreground);
+}
+
+.active {
+    background: var(--primary);
+    color: var(--background);
+    /* Invert text for dark bg */
+    border-color: var(--primary);
+}
+
+.active:hover {
+    background: var(--primary-hover);
+    color: var(--background);
+}

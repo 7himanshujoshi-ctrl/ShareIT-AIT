@@ -1,0 +1,78 @@
+.main {
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+.header {
+  padding: 4rem 0;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  color: #6b7280;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+/* Masonry Grid Implementation using CSS Columns */
+.grid {
+  column-count: 1;
+  column-gap: 24px;
+}
+
+.gridItem {
+  break-inside: avoid;
+  margin-bottom: 24px;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    column-count: 3;
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    column-count: 4;
+  }
+}
+
+/* Upload Section */
+.actionBar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
+  gap: 1rem;
+}
+
+.search {
+  padding: 12px 24px;
+  border-radius: 99px;
+  border: 1px solid var(--card-border);
+  width: 100%;
+  max-width: 400px;
+  background: white;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s;
+}
+
+.search:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+}

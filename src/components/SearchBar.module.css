@@ -1,0 +1,39 @@
+.container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 24px auto;
+}
+
+.input {
+    width: 100%;
+    padding: 16px 24px;
+    padding-left: 54px;
+    /* Space for icon */
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    color: var(--foreground);
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 99px;
+    /* Pill shape */
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(217, 119, 6, 0.1);
+    /* Accent ring */
+}
+
+.icon {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.25rem;
+    color: #9CA3AF;
+    pointer-events: none;
+}

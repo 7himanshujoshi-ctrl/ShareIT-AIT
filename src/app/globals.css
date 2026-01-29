@@ -1,0 +1,111 @@
+:root {
+  /* Modern Academic Palette */
+  --background: #F9FAFB; /* Very light cool grey */
+  --foreground: #111827; /* Dark slate */
+  
+  --card-bg: #FFFFFF;
+  --card-border: #E5E7EB;
+  
+  --primary: #1F2937;    /* Slate-800 */
+  --primary-hover: #111827;
+  --accent: #D97706;     /* Amber-600 */
+  
+  --success: #10B981;
+  --warning: #F59E0B;
+  --error: #EF4444;
+
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #111827;
+    --foreground: #F9FAFB;
+    
+    --card-bg: #1F2937;
+    --card-border: #374151;
+    
+    --primary: #F3F4F6;
+    --primary-hover: #E5E7EB;
+    --accent: #F59E0B;
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif), serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Utilities */
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px; /* Pill shape */
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--foreground);
+  color: var(--background);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--foreground);
+}
+
+.btn-secondary:hover {
+  background-color: var(--card-border);
+}
+
+.fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

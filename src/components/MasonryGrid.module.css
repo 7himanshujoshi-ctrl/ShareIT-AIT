@@ -1,0 +1,25 @@
+.grid {
+    display: block;
+    column-count: 1;
+    column-gap: 24px;
+    padding: 24px 0;
+}
+
+/* Response Breakpoints for Pinterest-like effect */
+@media (min-width: 640px) {
+    .grid {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 1024px) {
+    .grid {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1280px) {
+    .grid {
+        column-count: 4;
+    }
+}
